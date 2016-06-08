@@ -1,0 +1,21 @@
+{
+  "name": "realm-server",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Ivan.Orlov <ivan@morrr.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/realm-js/realm-server",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "^4.13.1"
+  }
+}
