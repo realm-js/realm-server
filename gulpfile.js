@@ -42,7 +42,7 @@ gulp.task('server', function() {
 });
 
 gulp.task('start', function() {
-   return runSequence('build', 'copy-dependencies', function() {
+   return runSequence('dist', function() {
       runSequence('server')
       return gulp.watch(['src/**/*.js'], function() {
          runSequence('build', 'server')
@@ -65,16 +65,14 @@ gulp.task('copy-dependencies', function() {
 });
 
 gulp.task("build", function() {
-   return realm.transpiler2.universal("src/", "build/").then(function() {
-      return runSequence('dist-backend')
-   })
+   return realm.transpiler2.universal("src/", "build/");
 });
 
 gulp.task("publish", ['dist', 'increment-version'], function() {
-   //runSequence('push')
+   runSequence('push')
 })
 gulp.task("dist", function(done) {
-   runSequence('build', done)
+   runSequence('build', 'dist-backend', 'copy-dependencies', done)
 });
 gulp.task('dist-backend', function() {
    return gulp.src(["build/backend.js"])
@@ -85,10 +83,4 @@ gulp.task('dist-backend', function() {
          }
       }))
       .pipe(gulp.dest("./dist/backend/"))
-});
-gulp.task('uglify-frontend', function() {
-   return gulp.src("dist/frontend/realm.router.js")
-      .pipe(uglify())
-      .pipe(rename('realm.router.min.js'))
-      .pipe(gulp.dest('./dist/frontend/'));
 });
