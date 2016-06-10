@@ -101,7 +101,25 @@ class Express {
       var startingUrl = this.url.split("")
 
       this.app.use(regexp, function(req, res) {
-         res.send(swig.renderFile(templatePath, tempateData));
+
+         if (tempateData && _.isFunction(tempateData.onRender)) {
+            var result = tempateData.onRender(req, res);
+            if (result && _.isFunction(result.then)) {
+               result.then(function(data) {
+                  var _t = tempateData;
+                  if (_.isPlainObject(data)) {
+                     _t = _.merge(_t, data);
+                  }
+
+                  res.send(swig.renderFile(templatePath, _t));
+               });
+            } else {
+               res.send(swig.renderFile(templatePath, tempateData));
+            }
+         } else {
+            res.send(swig.renderFile(templatePath, tempateData));
+         }
+
       });
    }
 

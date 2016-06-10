@@ -42,10 +42,10 @@ gulp.task('server', function() {
 });
 
 gulp.task('start', function() {
-   return runSequence('dist', function() {
+   return runSequence('build', 'dist', function() {
       runSequence('server')
       return gulp.watch(['src/**/*.js'], function() {
-         runSequence('build', 'server')
+         runSequence('build', 'dist', 'server')
       });
    });
 });

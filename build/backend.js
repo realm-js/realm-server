@@ -2,6 +2,7 @@
 
 realm.module("stest.ExpressApplication",["realm.server.Express"],function(Express){ var $_exports;
 
+
 class ExpressApplication extends Express {
 
    configure() {
@@ -13,12 +14,23 @@ class ExpressApplication extends Express {
          '/dependencies/realm.js',
          '/dependencies/realm.router.js'
       ]);
-
+      var i = 0;
       this.bindIndex(/^\/(?!api|_realm_|favicon.ico).*/, {
          application: 'app.Hello',
-         title: "Hello"
+         title: "Hello",
+         onRender: function(req, res) {
+            return new Promise(function(resolve, reject) {
+               return resolve({
+                  base: "/sukka",
+                  window: {
+                     hello: "'pukka sukka'",
+                     pukka: i++
+                  }
+               })
+            })
+         }
       });
-      
+
       this.start();
    }
 }
@@ -127,7 +139,25 @@ class Express {
       var startingUrl = this.url.split("")
 
       this.app.use(regexp, function(req, res) {
-         res.send(swig.renderFile(templatePath, tempateData));
+
+         if (tempateData && _.isFunction(tempateData.onRender)) {
+            var result = tempateData.onRender(req, res);
+            if (result && _.isFunction(result.then)) {
+               result.then(function(data) {
+                  var _t = tempateData;
+                  if (_.isPlainObject(data)) {
+                     _t = _.merge(_t, data);
+                  }
+
+                  res.send(swig.renderFile(templatePath, _t));
+               });
+            } else {
+               res.send(swig.renderFile(templatePath, tempateData));
+            }
+         } else {
+            res.send(swig.renderFile(templatePath, tempateData));
+         }
+
       });
    }
 
