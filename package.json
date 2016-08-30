@@ -1,6 +1,6 @@
 {
   "name": "realm-server",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "express": "^4.13.4",
     "lodash": "^4.13.1",
     "realm-js": "^1.1.85",
-    "realm-router": "^1.1.24",
+    "realm-router": "^1.1.25",
     "swig": "^1.4.2"
   },
   "devDependencies": {

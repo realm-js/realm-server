@@ -1,5 +1,5 @@
 var gulp = require("gulp");
-
+var rename = require("gulp-rename");
 var runSequence = require('run-sequence');
 var _ = require('lodash')
 var realm = require('realm-js');

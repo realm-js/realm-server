@@ -21,9 +21,15 @@ class Express {
       this.macros = {};
       this.defaultMacros();
       this.app.use(cookieParser('your secret here'));
-      this.app.use(bodyParser.json());
+
+      this.app.use(bodyParser.json({
+         limit:1024*1024*80,
+         parameterLimit:50000
+      }));
       this.app.use(bodyParser.urlencoded({
-         extended: true
+          extended: true,
+          limit:1024*1024*80,
+          parameterLimit:50000
       }));
    }
 

@@ -53,7 +53,9 @@
                 this.macros = {};
                 this.defaultMacros();
                 this.app.use(cookieParser('your secret here'));
-                this.app.use(bodyParser.json());
+                this.app.use(bodyParser.json({
+                    limit: '50mb'
+                }));
                 this.app.use(bodyParser.urlencoded({
                     extended: true
                 }));
